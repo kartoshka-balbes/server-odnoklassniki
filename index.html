@@ -1,4 +1,3 @@
-```react
 import React, { useState, useEffect } from 'react';
 
 // Иконки SVG для полной автономности приложения
@@ -46,7 +45,6 @@ export default function App() {
       const gain = ctx.createGain();
 
       osc.type = 'sawtooth';
-      // Имитация сирены (колебания частоты)
       osc.frequency.setValueAtTime(350, ctx.currentTime);
       osc.frequency.linearRampToValueAtTime(700, ctx.currentTime + 0.25);
       osc.frequency.linearRampToValueAtTime(350, ctx.currentTime + 0.5);
@@ -64,7 +62,7 @@ export default function App() {
     }
   };
 
-  // Обработчик всех кликов по кнопкам на сайте для активации СИРЕНЫ
+  // Обработчик всех кликов по кнопкам
   const handleSiteClick = (e) => {
     if (e.target.closest('button') || e.target.closest('a') || e.target.closest('[role="button"]')) {
       triggerSirenSound();
@@ -105,7 +103,7 @@ export default function App() {
     }
   };
 
-  // Реформы из загруженного скриншота
+  // Реформы
   const listReforms = [
     { title: "Переименование СВО в Мировую Обстановку", desc: "Канал #сво переименован в #мировая-обстановка. Туда же объединены и удалены: #российская-пропаганда, #американская-пропаганда, #азиатский-баттл-рояль, #остальной-мир, #трамп-новости-переговоры, #новости-культуры." },
     { title: "Интеграция бота в Мировую Обстановку", desc: "Добавлен бот с постоянными новостями для своевременного информирования участников." },
@@ -150,14 +148,18 @@ export default function App() {
   const playTurn = (index) => {
     if (gameFinished) return;
     const item = gameTitles[index];
-    const outcomeText = `Вы столкнулись с титулом: "${item.title}" (${item.desc}). Картошка доминирует своим опытом! Вы получили мощный удар величием в ${item.value} единиц.`;
+    const newScore = gameScore + item.value;
+    const outcomeText = `Вы столкнулись с титулом: "\( {item.title}" ( \){item.desc}). Картошка доминирует своим опытом! Вы получили мощный удар величием в ${item.value} единиц.`;
     
-    setGameScore(prev => prev + item.value);
+    setGameScore(newScore);
     setGameLog(prev => [...prev, outcomeText]);
 
     if (gameLog.length >= 4) {
       setGameFinished(true);
-      setGameLog(prev => [...prev, `ИГРА ОКОНЧЕНА. Вы полностью раздавлены авторитетом Императора Картошки! Итоговый счет вашего поражения: ${gameScore + item.value} очков величия Картошки.`, "Поздравляем с заслуженным проигрышем!"]);
+      setGameLog(prev => [...prev, 
+        `ИГРА ОКОНЧЕНА. Вы полностью раздавлены авторитетом Императора Картошки! Итоговый счет вашего поражения: ${newScore} очков величия Картошки.`,
+        "Поздравляем с заслуженным проигрышем!"
+      ]);
       unlockEgg("Поражение в дебатах");
     }
   };
@@ -180,9 +182,8 @@ export default function App() {
       <div className="absolute bottom-10 left-10 w-96 h-96 bg-indigo-900/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* ШАПКА САЙТА */}
-      <header className="border-b border-blue-900/40 bg-slate-950/80 backdrop-blur-md sticky top-0 z-45 py-4">
+      <header className="border-b border-blue-900/40 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50 py-4">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
-          
           {/* Герб */}
           <div className="flex items-center gap-4 cursor-pointer group" onClick={() => unlockEgg("Клик по Гербу")}>
             <div className="w-16 h-16 bg-gradient-to-tr from-blue-700 to-indigo-950 rounded-full flex items-center justify-center border border-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.5)] group-hover:scale-105 transition-transform duration-300">
@@ -212,11 +213,10 @@ export default function App() {
               <div className="text-xs font-bold text-white font-mono">КАРТОШКА</div>
             </div>
           </div>
-
         </div>
       </header>
 
-      {/* МЕНЮ НАВИГАЦИИ (19 Вкладок) */}
+      {/* МЕНЮ НАВИГАЦИИ */}
       <nav className="max-w-7xl mx-auto px-4 mt-6">
         <div className="bg-slate-950/90 border border-blue-900/50 p-2 rounded-2xl backdrop-blur-md shadow-2xl">
           <div className="flex flex-wrap gap-1 justify-center max-h-[180px] md:max-h-none overflow-y-auto">
@@ -270,9 +270,11 @@ export default function App() {
 
       {/* ОСНОВНОЙ КОНТЕНТ */}
       <main className="max-w-7xl mx-auto px-4 mt-8">
-        <div className="bg-slate-900/40 border border-blue-900/20 rounded-3xl p-6 md:p-8 backdrop-blur-lg shadow-xl min-h-[500px]">
+        <div className="bg-slate-900/40 border border-blue-900/20 rounded-3xl p-6 md:p-8 backdrop-blur-lg shadow-xl min-h-[500px] relative">
           
           {/* ГЛАВНАЯ */}
           {activeTab === 'Главная' && (
-            <div className="space-y-8">
-              <div className="text-center max-w-
+            <div className="space-y-8 text-center">
+              <div className="max-w-2xl mx-auto">
+                <div className="text-6xl mb-6">🥔</div>
+              
